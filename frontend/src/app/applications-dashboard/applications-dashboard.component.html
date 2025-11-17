@@ -1,0 +1,19 @@
+<p>applications-dashboard works!</p>
+
+<table>
+  <thead>
+    <th> Job
+    </th>
+    <th>CV</th>
+    <th>Status</th>
+    <th>Date</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let app of applications">
+      <td>{{ getJobTitle(app.jobId) }}</td>
+      <td>{{ getCvName(app.cvId) }}</td>
+      <td>{{ app.status || 'pending' }}</td>
+      <td>{{ app['CreatedAt'] | date:'short' }}</td>
+    </tr>
+  </tbody>
+</table>

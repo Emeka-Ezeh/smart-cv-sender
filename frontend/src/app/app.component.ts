@@ -4,12 +4,13 @@ import { JobListComponent } from './job-list/job-list.component';
 import { CV } from './cv/cv.model';
 import { CommonModule } from '@angular/common';
 import { CvService } from './Service/cv.service';
+import { ApplicationsDashboardComponent } from "./applications-dashboard/applications-dashboard.component";
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ CvManagerComponent, JobListComponent, CommonModule],
+  imports: [CvManagerComponent, JobListComponent, CommonModule, ApplicationsDashboardComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

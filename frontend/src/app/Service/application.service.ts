@@ -7,6 +7,8 @@ export interface Application {
   jobId: number;
   cvId: number;
   status?: string;
+  CreatedAt?: string;
+  UpdatedAt?: string;
 }
 
 @Injectable({
