@@ -1,0 +1,19 @@
+h2 {
+  margin-bottom: 10px;
+}
+
+div {
+  margin-bottom: 15px;
+}
+
+input {
+  margin-right: 10px;
+}
+button {
+  padding: 5px 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}

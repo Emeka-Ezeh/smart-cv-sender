@@ -1,0 +1,15 @@
+<h2>CV Manager</h2>
+
+
+<div>
+  <label for="name"> Name:</label>
+  <input [ngClass]="newCvFilePath" placeholder="/files/mycv.pdf" />
+
+  <button (click)="addcv()"> Add CV</button>
+</div>
+
+<ul>
+  <li *ngFor="let cv of cvs">
+    {{ cv.name }} - {{ cv.filePath }}
+  </li>
+</ul>
