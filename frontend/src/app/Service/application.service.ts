@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Job } from './job.service';
+import { CV } from '../cv/cv.model';
 
 export interface Application {
-  id?: string;
-  jobId: number;
-  cvId: number;
+  id: string;
+  jobId: Job;
+  cvId: CV;
   status?: string;
   CreatedAt?: string;
   UpdatedAt?: string;

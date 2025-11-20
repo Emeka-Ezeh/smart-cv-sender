@@ -5,6 +5,7 @@ import { CvModule } from './cv/cv.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JobsModule } from './jobs/jobs.module';
 import { ApplicationsModule } from './applications/applications.module';
+import { SeederModule } from './seeder/seeder.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ApplicationsModule } from './applications/applications.module';
     CvModule,
     JobsModule,
     ApplicationsModule,
+    SeederModule,
   ],
   controllers: [AppController],
   providers: [AppService],

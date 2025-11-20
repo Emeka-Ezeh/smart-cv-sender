@@ -16,7 +16,11 @@ export class ApplicationsService {
   }
 
   async findAll(): Promise<Application[]> {
-    return this.applicationModel.find().exec();
+    return this.applicationModel
+      .find()
+      .populate('jobId')
+      .populate('cvId')
+      .exec();
   }
 
   async findByJob(jobId: number): Promise<Application[]> {

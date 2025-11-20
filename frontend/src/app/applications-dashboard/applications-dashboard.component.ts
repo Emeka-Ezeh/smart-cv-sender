@@ -40,8 +40,8 @@ export class ApplicationsDashboardComponent {
     })
   }
 
-  getJobTitle(jobId: number): string {
-    const job = this.jobs.find(j => Number  (j.id ) === jobId);
+  getJobTitle(jobId: string): string {
+    const job = this.jobs.find(j => String  (j.id ) === jobId);
     return job ? job.title : 'Unknown Job';
   }
 

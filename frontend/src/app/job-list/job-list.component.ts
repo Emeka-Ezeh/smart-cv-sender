@@ -51,9 +51,21 @@ loadJobs() {
       return;
     }
 
+    const selectedCv = this.cvs.find(cv => cv.id === String(this.selectedCvId));
+    if (!selectedCv) {
+      alert('Selected CV not found!');
+      return;
+    }
+
+    const selectedJob = this.jobs.find(job => job.id === String(jobId));
+    if (!selectedJob) {
+      alert('Selected job not found!');
+      return;
+    }
+
     this.applicationService.send({
-      jobId: Number(jobId),
-      cvId: Number(this.selectedCvId) })
+      jobId: selectedJob,
+      cvId: selectedCv })
       .subscribe({
         next: () => alert(`CV ${this.selectedCvId} sent to job ${jobId}`),
         error: (err) => console.error('Error sending CV', err)

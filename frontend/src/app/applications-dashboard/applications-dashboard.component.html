@@ -12,16 +12,15 @@
   </thead>
   <tbody>
     <tr *ngFor="let app of applications">
-      <td>{{ getJobTitle(app.jobId) }}</td>
-      <td>{{ getCvName(app.cvId) }}</td>
-      <td>{{ app.status || 'pending' }}</td>
+      <td>{{ app.jobId.title }}</td>
+      <td>{{ app.cvId.name }}</td>
+      <td>{{ app.status }}</td>
       <td>{{ app.CreatedAt | date:'short' }}</td>
       <td>
-        <button (click)="updateApplicationStatus(app.id!, 'sent')">Mark Sent</button>
-        <button (click)="updateApplicationStatus(app.id!, 'accepted')">Mark Accepted</button>
-        <button (click)="updateApplicationStatus(app.id!, 'rejected')">Mark Rejected</button>
+        <button (click)="updateApplicationStatus(app.id, 'sent')">Mark Sent</button>
+        <button (click)="updateApplicationStatus(app.id, 'accepted')">Mark Accepted</button>
+        <button (click)="updateApplicationStatus(app.id, 'rejected')">Mark Rejected</button>
       </td>
     </tr>
   </tbody>
 </table>
-
