@@ -4,11 +4,14 @@ import { ApplicationService, Application } from '../Service/application.service'
 import { JobService, Job } from '../Service/job.service';
 import { CvService } from '../Service/cv.service';
 import { CV } from '../cv/cv.model';
+import { StatusFilterPipe } from '../pipe/status-filter.pipe';
+import { FormsModule } from '@angular/forms';
+import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-applications-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule , StatusFilterPipe],
   templateUrl: './applications-dashboard.component.html',
   styleUrl: './applications-dashboard.component.css'
 })
@@ -16,11 +19,14 @@ export class ApplicationsDashboardComponent {
   applications: Application[] = [];
   cvs: CV[] = [];
   jobs: Job[] = [];
+  selectedStatus: string = '';
+  chart: any;
+  statusChart: any;
+  jobChart: any;
 
   constructor(
     private applicationService: ApplicationService,
-    private cvService: CvService,
-    private jobService: JobService
+
   ) {
     this.loadData();
   }
@@ -29,15 +35,79 @@ export class ApplicationsDashboardComponent {
     this.applicationService.getAll().subscribe({
       next: (apps) => this.applications = apps,
       error: (err) => console.error('Error Loading applications', err)
-    })
-    this.cvService.getAll().subscribe({
-      next: (data) => this.cvs = data,
-      error: (err) => console.error('Error Loading CVs', err)
-    })
-    this.jobService.getAll().subscribe({
-      next: (data) => this.jobs = data,
-      error: (err) => console.error('Error Loading Jobs', err)
-    })
+    });
+  }
+
+   ngAfterViewInit() {
+    this.createStatusChart();
+    this.createJobChart();
+    this.updateStatusChart();
+    this.updateJobChart();
+
+  }
+
+createStatusChart() {
+    const ctx = document.getElementById('statusChart') as HTMLCanvasElement;
+    this.statusChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Pending', 'Sent', 'Accepted', 'Rejected'],
+        datasets: [{
+          label: 'Applications by Status',
+          data: [0, 0, 0, 0],
+          backgroundColor: ['#f0ad4e', '#5bc0de', '#5cb85c', '#d9534f']
+        }]
+      }
+    });
+  }
+
+  updateStatusChart() {
+    if (!this.statusChart) return;
+    const stats = { pending: 0, sent: 0, accepted: 0, rejected: 0 };
+    for (const app of this.applications) {
+      if (app.status && stats.hasOwnProperty(app.status)) {
+        stats[app.status as keyof typeof stats]++;
+      }
+    }
+    this.statusChart.data.datasets[0].data = [
+      stats.pending,
+      stats.sent,
+      stats.accepted,
+      stats.rejected
+    ];
+    this.statusChart.update();
+  }
+  createJobChart() {
+    const ctx = document.getElementById('jobChart') as HTMLCanvasElement;
+    this.jobChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [], // job titles
+        datasets: [{
+          label: 'Applications per Job',
+          data: [],
+          backgroundColor: '#5bc0de'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  }
+
+  updateJobChart() {
+    if (!this.jobChart) return;
+    const jobCounts: { [key: string]: number } = {};
+    for (const app of this.applications) {
+      const jobTitle = app.jobId?.title || 'Unknown Job';
+      jobCounts[jobTitle] = (jobCounts[jobTitle] || 0) + 1;
+    }
+    this.jobChart.data.labels = Object.keys(jobCounts);
+    this.jobChart.data.datasets[0].data = Object.values(jobCounts);
+    this.jobChart.update();
   }
 
   getJobTitle(jobId: string): string {
@@ -58,6 +128,22 @@ export class ApplicationsDashboardComponent {
       },
       error: (err) => console.error('Error updating application status', err)
     })
+  }
+
+  getFilteredApplications(): Application[] {
+    if (!this.selectedStatus) return this.applications;
+    return this.applications.filter(app => app.status === this.selectedStatus);
+  }
+
+  getStats(){
+    const stats: {[key: string]: number} = { pending: 0, sent: 0, accepted: 0, rejected: 0 };
+    const filteredApps = this.getFilteredApplications();
+    for (const app of this.applications){
+      if(app.status && stats.hasOwnProperty(app.status)){
+        stats[app.status as keyof typeof stats]++;
+      }
+    }
+    return stats;
   }
 
 }

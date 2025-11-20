@@ -1,4 +1,24 @@
 <h2>Applications Dashboard</h2>
+<div class="charts">
+  <canvas id="statusChart"></canvas>
+  <canvas id="jobChart"></canvas>
+</div>
+<div class="stats-bar">
+  <span>Pending: {{ getStats()['pending'] }}</span> |
+  <span>Sent: {{ getStats()['sent'] }}</span> |
+  <span>Accepted: {{ getStats()['accepted'] }}</span> |
+  <span>Rejected: {{ getStats()['rejected'] }}</span>
+</div>
+
+<label for="statusFilter">Filter by status</label>
+<select id="statusFilter" [(ngModel)]="selectedStatus">
+  <option value="">All</option>
+  <option value="pending">Pending</option>
+  <option value="sent">Sent</option>
+  <option value="accepted">Accepted</option>
+  <option value="rejected">Rejected</option>
+</select>
+ <button (click)="selectedStatus=''">Clear Filter</button>
 
 <table>
   <thead>
