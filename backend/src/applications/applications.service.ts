@@ -22,4 +22,10 @@ export class ApplicationsService {
   async findByJob(jobId: number): Promise<Application[]> {
     return this.applicationModel.find({ jobId }).exec();
   }
+
+  async updateStatus(id: string, status: string): Promise<Application | null> {
+    return this.applicationModel
+      .findByIdAndUpdate(id, { status }, { new: true })
+      .exec();
+  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
 import { Application } from './applications.schema';
 
@@ -21,5 +21,13 @@ export class ApplicationsController {
     @Body() body: { jobId: number; cvId: number },
   ): Promise<Application> {
     return this.applicationsService.create(body);
+  }
+
+  @Patch(':id/status')
+  async updateStatus(
+    @Param('id') id: string,
+    @Body('status') status: string,
+  ): Promise<Application | null> {
+    return this.applicationsService.updateStatus(id, status);
   }
 }

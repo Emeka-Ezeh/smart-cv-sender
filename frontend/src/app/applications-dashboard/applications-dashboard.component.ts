@@ -50,4 +50,14 @@ export class ApplicationsDashboardComponent {
     return cv ? cv.name : 'Unknown CV';
   }
 
+  updateApplicationStatus(appId: string, status: string){
+    this.applicationService.updateStatus(appId, status).subscribe({
+      next: (updated) => {
+        const index = this.applications.findIndex(a => a.id === appId);
+        if ( index !== -1) this.applications[index] = updated;
+      },
+      error: (err) => console.error('Error updating application status', err)
+    })
+  }
+
 }

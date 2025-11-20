@@ -16,6 +16,7 @@ export interface Job {
 export class JobService {
   private apiUrl = 'http://localhost:3000/jobs';
 
+
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Job[]> {

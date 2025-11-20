@@ -26,4 +26,8 @@ export class ApplicationService {
   send(application: Partial<Application>): Observable<Application> {
     return this.http.post<Application>(this.apiUrl, application);
   }
+
+  updateStatus(id: string, status: string): Observable<Application> {
+    return this.http.patch<Application>(`${this.apiUrl}/${id}/status`, { status });
+  }
 }

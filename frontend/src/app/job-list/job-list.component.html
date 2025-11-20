@@ -9,6 +9,6 @@
 <ul>
   <li *ngFor="let job of jobs">
     <strong>{{ job.title }}</strong> — {{ job.company }} ({{ job.location }})
-    <button (click)="sendCv(job.title)">Send CV</button>
+    <button (click)="sendCv(job.id!)">Send CV</button>
   </li>
 </ul>

@@ -25,33 +25,39 @@ export class JobListComponent {
     this.loadJobs();
   }
 
+loadJobs() {
+  this.jobService.getAll().subscribe({
+    next: (data) => {
+      this.jobs = Array.isArray(data) && data.length > 0 ? data : [
+        { id: '1', title: 'Frontend Developer', company: 'TechCorp', location: 'Remote' },
+        { id: '2', title: 'Angular Engineer', company: 'Innovate Ltd', location: 'Milan' }
+      ];
+    },
+    error: (err) => {
+      console.error('Error loading jobs', err);
+      this.jobs = [
+        { id: '1', title: 'Frontend Developer', company: 'TechCorp', location: 'Remote' },
+        { id: '2', title: 'Angular Engineer', company: 'Innovate Ltd', location: 'Milan' }
+      ];
+    }
+  });
+}
 
 
-  loadJobs() {
-    this.http.get<any[]>('http://localhost:3000/jobs').subscribe({
-      next: (data) => this.jobs = data,
-      error: () => {
-        // fallback dummy jobs
-        this.jobs = [
-          {  title: 'Frontend Developer', company: 'TechCorp', location: 'Remote' },
-          {  title: 'Angular Engineer', company: 'Innovate Ltd', location: 'Milan' }
-        ];
-      }
-    });
-  }
 
-  sendCv(jobId: string) {
+  sendCv(jobId: string | number) {
     if (!this.selectedCvId) {
       alert('Please select a CV first!');
       return;
     }
 
-
-     this.applicationService.send({ jobId: Number(jobId), cvId: Number(this.selectedCvId) })
+    this.applicationService.send({
+      jobId: Number(jobId),
+      cvId: Number(this.selectedCvId) })
       .subscribe({
         next: () => alert(`CV ${this.selectedCvId} sent to job ${jobId}`),
         error: (err) => console.error('Error sending CV', err)
       });
   }
-
 }
+

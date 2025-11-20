@@ -1,19 +1,27 @@
-<p>applications-dashboard works!</p>
+<h2>Applications Dashboard</h2>
 
 <table>
   <thead>
-    <th> Job
-    </th>
-    <th>CV</th>
-    <th>Status</th>
-    <th>Date</th>
+    <tr>
+      <th>Job</th>
+      <th>CV</th>
+      <th>Status</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
   </thead>
   <tbody>
     <tr *ngFor="let app of applications">
       <td>{{ getJobTitle(app.jobId) }}</td>
       <td>{{ getCvName(app.cvId) }}</td>
       <td>{{ app.status || 'pending' }}</td>
-      <td>{{ app['CreatedAt'] | date:'short' }}</td>
+      <td>{{ app.CreatedAt | date:'short' }}</td>
+      <td>
+        <button (click)="updateApplicationStatus(app.id!, 'sent')">Mark Sent</button>
+        <button (click)="updateApplicationStatus(app.id!, 'accepted')">Mark Accepted</button>
+        <button (click)="updateApplicationStatus(app.id!, 'rejected')">Mark Rejected</button>
+      </td>
     </tr>
   </tbody>
 </table>
+
