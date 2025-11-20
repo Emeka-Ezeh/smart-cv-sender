@@ -29,7 +29,9 @@ export class ApplicationService {
     return this.http.post<Application>(this.apiUrl, application);
   }
 
-  updateStatus(id: string, status: string): Observable<Application> {
-    return this.http.patch<Application>(`${this.apiUrl}/${id}/status`, { status });
-  }
+updateStatus(id: string, status: string): Observable<Application> {
+  return this.http.patch<Application>(`/applications/${id}/status`, { status });
+}
+
+
 }

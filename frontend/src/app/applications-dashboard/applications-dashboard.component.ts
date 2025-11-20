@@ -120,15 +120,20 @@ createStatusChart() {
     return cv ? cv.name : 'Unknown CV';
   }
 
-  updateApplicationStatus(appId: string, status: string){
-    this.applicationService.updateStatus(appId, status).subscribe({
-      next: (updated) => {
-        const index = this.applications.findIndex(a => a.id === appId);
-        if ( index !== -1) this.applications[index] = updated;
-      },
-      error: (err) => console.error('Error updating application status', err)
-    })
-  }
+updateApplicationStatus(appId: string, status: string) {
+  this.applicationService.updateStatus(appId, status).subscribe({
+    next: (updated) => {
+      const index = this.applications.findIndex(a => a.id === appId);
+      if (index !== -1) {
+        this.applications[index] = updated;
+        this.updateStatusChart(); // refresh pie chart
+        this.updateJobChart();    // refresh bar chart
+      }
+    },
+    error: (err) => console.error('Error updating application status', err)
+  });
+}
+
 
   getFilteredApplications(): Application[] {
     if (!this.selectedStatus) return this.applications;
